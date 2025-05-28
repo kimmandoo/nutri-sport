@@ -21,6 +21,7 @@ import nutri_sport.composeapp.generated.resources.compose_multiplatform
 @Composable
 @Preview
 fun App() {
+    // 여기가 진짜 composefile을 작성할 곳
     MaterialTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
@@ -33,7 +34,9 @@ fun App() {
                 Text("Click me!")
             }
             AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
+                val greeting = remember {
+
+                }
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
                     Text("Compose: $greeting")
