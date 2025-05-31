@@ -5,6 +5,11 @@
 xcuserdata
 !src/**/build/
 local.properties
+
+# google firebase
+google-services.json
+GoogleService-Info.plist
+
 .idea
 .DS_Store
 captures
