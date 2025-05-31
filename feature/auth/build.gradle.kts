@@ -45,6 +45,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.messagebar.kmp)
+            // auth
+            implementation(libs.auth.kmp)
+            implementation(libs.auth.firebase.kmp)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

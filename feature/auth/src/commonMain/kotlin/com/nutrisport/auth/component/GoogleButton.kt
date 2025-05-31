@@ -1,6 +1,6 @@
-package com.nutrisport.auth
+package com.nutrisport.auth.component
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
@@ -27,14 +27,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.nutrisport.shared.FontSize
-import com.nutrisport.shared.Gray
-import com.nutrisport.shared.GrayDarker
 import com.nutrisport.shared.IconSecondary
 import com.nutrisport.shared.Resources
+import com.nutrisport.shared.SurfaceDarker
+import com.nutrisport.shared.SurfaceLighter
 import com.nutrisport.shared.TextPrimary
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -47,8 +46,8 @@ fun GoogleButton(
     secondaryText: String = "기다려",
     icon: DrawableResource = Resources.Image.GoogleLogo,
     shape: Shape = RoundedCornerShape(size = 99.dp), // full corner radius
-    backgroundColor: Color = Gray,
-    borderColor: Color = GrayDarker,
+    backgroundColor: Color = SurfaceLighter,
+    borderColor: Color = SurfaceDarker,
     progressIndicatorColor: Color = IconSecondary,  // 지금 세팅되어있는 건 오렌지색
     onClick: () -> Unit
 ) {
@@ -83,24 +82,42 @@ fun GoogleButton(
 //                painter = painterResource(icon),
 //                contentDescription = "Google Logo",
 //            )
-            AnimatedVisibility(
-                visible = !loading
+            AnimatedContent(
+                targetState = loading
             ){
-                Icon(
-                    painter = painterResource(icon),
-                    contentDescription = "Google Logo",
-                    tint = Color.Unspecified // tint가 무슨 역할을 할까 -> 기본tint가 까만색이라서 덮어씌워짐
-                )
+                if(!loading){
+                    Icon(
+                        painter = painterResource(icon),
+                        contentDescription = "Google Logo",
+                        tint = Color.Unspecified // tint가 무슨 역할을 할까 -> 기본tint가 까만색이라서 덮어씌워짐
+                    )
+                }else{
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp,
+                        color = progressIndicatorColor
+                    )
+                }
             }
-            AnimatedVisibility(
-                visible = loading
-            ){
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    strokeWidth = 2.dp,
-                    color = progressIndicatorColor
-                )
-            }
+            // TODO: AnimatedVisibility와 AnimatedContent 차이점 공부
+//            AnimatedVisibility(
+//                visible = !loading
+//            ){
+//                Icon(
+//                    painter = painterResource(icon),
+//                    contentDescription = "Google Logo",
+//                    tint = Color.Unspecified // tint가 무슨 역할을 할까 -> 기본tint가 까만색이라서 덮어씌워짐
+//                )
+//            }
+//            AnimatedVisibility(
+//                visible = loading
+//            ){
+//                CircularProgressIndicator(
+//                    modifier = Modifier.size(24.dp),
+//                    strokeWidth = 2.dp,
+//                    color = progressIndicatorColor
+//                )
+//            }
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = buttonText,

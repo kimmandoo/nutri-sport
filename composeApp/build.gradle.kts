@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -34,6 +35,9 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.splash.screen)
+
+            implementation(libs.firebase.app)
+            implementation(libs.firebase.common)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -45,7 +49,10 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             // 이제 공통모듈은 여기 추가할 것
+            implementation(libs.auth.kmp)
+//            implementation(libs.auth.firebase.kmp) // google btn ui container를 안쓰니까 여기서는 필요없음
             implementation(project(path = ":navigation"))
+            implementation(project(path = ":shared"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

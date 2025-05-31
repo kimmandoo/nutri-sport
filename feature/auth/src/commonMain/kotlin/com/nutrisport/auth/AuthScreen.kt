@@ -1,4 +1,4 @@
-package com.nutrisport.auth.component
+package com.nutrisport.auth
 
 import ContentWithMessageBar
 import androidx.compose.foundation.layout.Arrangement
@@ -9,12 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.nutrisport.auth.GoogleButton
+import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
+import com.nutrisport.auth.component.GoogleButton
 import com.nutrisport.shared.Alpha
 import com.nutrisport.shared.BebasNeueFont
 import com.nutrisport.shared.FontSize
@@ -25,6 +30,8 @@ import rememberMessageBarState
 @Composable
 fun AuthScreen() {
     val messageBarState = rememberMessageBarState()
+    var loadingState by remember { mutableStateOf(false) }
+
     Scaffold { padding ->
         // scaffold의 padding은 systembar와 navigationbar의 패딩을 고려한다
         ContentWithMessageBar(
@@ -58,11 +65,40 @@ fun AuthScreen() {
                         color = TextSecondary
                     )
                 }
-                GoogleButton(
-                    loading = false,
-                    onClick = {
-
-                })
+                GoogleButtonUiContainerFirebase(
+                    linkAccount = false,
+                    onResult = { res ->
+                        // success or failure msg
+                        res
+                            .onSuccess { user ->
+                                println(user)
+                                messageBarState.addSuccess("Login Success")
+                                loadingState = false
+                            }
+                            .onFailure { e ->
+                                if (e.message?.contains("network error") == true){
+                                    messageBarState.addError("Network Error")
+                                }else if(e.message?.contains("idToken is null") == true){
+                                    messageBarState.addError("Invalid Token")
+                                }else{
+                                    messageBarState.addError(e.message ?: "Unknown Error")
+                                }
+                                loadingState = false
+                            }
+                    }
+                ) {
+                    GoogleButton(
+                        loading = loadingState,
+                        onClick = {
+                            loadingState = true
+                            this@GoogleButtonUiContainerFirebase.onClick()
+                        })
+                }
+//                GoogleButton(
+//                    loading = loadingState,
+//                    onClick = {
+//
+//                })
             }
         }
 
